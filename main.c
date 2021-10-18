@@ -1,4 +1,3 @@
-#include "stdio.h"
 #include "philo.h"
 
 int ft_isNum(int c)
@@ -29,12 +28,14 @@ int checkAndFill(int argc, char **argv, t_philo *philo)
         i++;
     }
     philo->philos = ft_atoi(argv[1]);
+    philo->forks = philo->philos;
     philo->die = ft_atoi(argv[2]);
     philo->eat = ft_atoi(argv[3]);
     philo->sleep = ft_atoi(argv[4]);
     philo->stopTime = 0;
     if (argc == 6)
         philo->stopTime = ft_atoi(argv[5]);
+    return(1);
 }
 
 int main(int argc, char **argv)
@@ -43,11 +44,11 @@ int main(int argc, char **argv)
     if (argc == 5 || argc == 6)
     {
         if (checkAndFill(argc, argv, &philo) == -1)
-        {
-            printf("ERROR!\n");
             return (-1);
-        }
+    }
+    else
+    {
+        printf("Error. Please write correct!\n");
     }
     printf("philo - %d\ndie - %d\neat - %d\nsleep - %d\n", philo.philos, philo.die, philo.eat, philo.sleep);
-    printf("stopTime - %d\n", philo.stopTime);
 }
