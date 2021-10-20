@@ -6,6 +6,9 @@ NAME = philo
 
 SRC = 	main.c \
 		atoi.c \
+		init.c \
+		utils.c \
+		thread.c \
 
 
 OBJ = $(SRC:.c=.o)
