@@ -9,6 +9,7 @@ SRC = 	main.c \
 		init.c \
 		utils.c \
 		thread.c \
+		isDead.c 
 
 
 OBJ = $(SRC:.c=.o)
