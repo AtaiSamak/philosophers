@@ -58,7 +58,10 @@ int	initPhilosForks(t_main *args)
 	args->write = sem_open("write", O_CREAT | O_EXCL, 0644, 1);
 	args->finish = sem_open("finish", O_CREAT | O_EXCL, 0644, 0);
 	args->check = sem_open("check", O_CREAT | O_EXCL, 0644, 1);
-	if(args->write == SEM_FAILED || args->eat == SEM_FAILED || args->forks == SEM_FAILED || args->finish == SEM_FAILED || args->check == SEM_FAILED)
+	args->amountAte = sem_open("amountAte", O_CREAT | O_EXCL, 0644, 1);
+	if(args->write == SEM_FAILED || args->eat == SEM_FAILED || \
+	args->forks == SEM_FAILED || args->finish == SEM_FAILED || \
+	args->check == SEM_FAILED || args->amountAte == SEM_FAILED)
 	{
 		clearSems(args);
 		return(-1);

@@ -22,6 +22,7 @@ void	*isFinish(void *arg)
 	sem_wait(args->finish);
 	killProcess(args);
 	clearSems(args);
+	free(args->philo);
 	return(NULL);
 }
 
@@ -46,20 +47,15 @@ void	*isDead(void *arg)
 	}
 }
 
-int	isEnd(t_main *args)
+void	*ateEnough(void *arg)
 {
 	int	i;
+	t_main *args;
 
 	i = -1;
+	args = (t_main *)arg;
 	while (++i < args->setting.philos)
-	{
-		if (args->philo[i].eats < args->setting.stopTime)
-			break ;
-	}
-	if (i == args->setting.philos)
-	{
-		sem_wait(args->write);
-		return (-1);
-	}
-	return (1);
+		sem_wait(args->amountAte);
+	sem_post(args->finish);
+	return (NULL);
 }

@@ -52,6 +52,7 @@ typedef struct s_main
 	sem_t					*forks;
 	sem_t					*check;
 	sem_t					*finish;
+	sem_t					*amountAte;
 }				t_main;
 
 int						ft_atoi(const char *str);
@@ -70,5 +71,6 @@ void					clearSems(t_main *args);
 int						isEnd(t_main *args);
 void					killProcess(t_main *args);
 void					*isFinish(void *arg);
+void					*ateEnough(void *arg);
 
 #endif

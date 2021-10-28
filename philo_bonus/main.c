@@ -19,11 +19,13 @@ void clearSems(t_main *args)
 	sem_unlink("write");
 	sem_unlink("check");
 	sem_unlink("finish");
+	sem_unlink("amountAte");
 	sem_close(args->forks);
 	sem_close(args->eat);
 	sem_close(args->write);
 	sem_close(args->check);
 	sem_close(args->finish);
+	sem_close(args->amountAte);
 }
 
 void killProcess(t_main *args)
@@ -52,10 +54,12 @@ int	main(int argc, char **argv)
 		printf("Error. Please write correct!\n");
 		return (-1);
 	}
+	clearSems(&args);
 	if (initPhilosForks(&args) == -1)
 		return (-1);
 	runProcess(&args);
 	if(args.setting.stopTime > 0)
+		pthread_create(&thread, NULL, ateEnough, &args);
 	pthread_create(&thread, NULL, isFinish, &args);
 	pthread_join(thread, NULL);
 	return(0);

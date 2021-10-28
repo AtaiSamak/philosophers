@@ -38,14 +38,16 @@ int runRoutine(t_philo *philo)
 {
     pthread_t thread;
 
-    pthread_create(&thread, NULL, isDead, philo);
     if(philo->id == 0 || (philo->id + 1) % 2 == 1)
-        usleep(50);
+        ft_usleep(1000);
+    pthread_create(&thread, NULL, isDead, philo);
     takeForks(philo->args, philo->id);
     philo->eats++;
     msg(" is eating\n", philo->id, philo->args, 11);
 	ft_usleep(philo->args->setting.eat * 1000);
 	philo->lastEat = getTime();
+    if(philo->eats == philo->args->setting.stopTime)
+        sem_post(philo->args->amountAte);
 	msg(" is sleeping\n", philo->id, philo->args, 13);
 	sem_post(philo->args->forks);
 	sem_post(philo->args->forks);
@@ -62,8 +64,6 @@ int runProcess(t_main *args)
 
     i = -1;
     args->time = getTime();
-    if(args->check == SEM_FAILED)
-        return(-1);
     while(++i < args->setting.philos)
     {
         args->philo[i].lastEat = args->time;
