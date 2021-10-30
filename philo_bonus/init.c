@@ -37,6 +37,25 @@ int	checkAndInitSettings(int argc, char **argv, t_main *args)
 	return (1);
 }
 
+int	initSemaphores(t_main *args)
+{
+	args->forks = sem_open("forks", O_CREAT | \
+	O_EXCL, 0644, args->setting.philos);
+	args->eat = sem_open("eat", O_CREAT | O_EXCL, 0644, 1);
+	args->write = sem_open("write", O_CREAT | O_EXCL, 0644, 1);
+	args->finish = sem_open("finish", O_CREAT | O_EXCL, 0644, 0);
+	args->check = sem_open("check", O_CREAT | O_EXCL, 0644, 1);
+	args->amountAte = sem_open("amountAte", O_CREAT | O_EXCL, 0644, 1);
+	if (args->write == SEM_FAILED || args->eat == SEM_FAILED || \
+	args->forks == SEM_FAILED || args->finish == SEM_FAILED || \
+	args->check == SEM_FAILED || args->amountAte == SEM_FAILED)
+	{
+		clearSems(args);
+		return (-1);
+	}
+	return (1);
+}
+
 int	initPhilosForks(t_main *args)
 {
 	int	i;
@@ -53,18 +72,8 @@ int	initPhilosForks(t_main *args)
 		args->philo[i].args = args;
 		args->philo[i].eats = 0;
 	}
-	args->forks = sem_open("forks", O_CREAT | O_EXCL,  0644, args->setting.philos);
-	args->eat = sem_open("eat", O_CREAT | O_EXCL, 0644, 1);
-	args->write = sem_open("write", O_CREAT | O_EXCL, 0644, 1);
-	args->finish = sem_open("finish", O_CREAT | O_EXCL, 0644, 0);
-	args->check = sem_open("check", O_CREAT | O_EXCL, 0644, 1);
-	args->amountAte = sem_open("amountAte", O_CREAT | O_EXCL, 0644, 1);
-	if(args->write == SEM_FAILED || args->eat == SEM_FAILED || \
-	args->forks == SEM_FAILED || args->finish == SEM_FAILED || \
-	args->check == SEM_FAILED || args->amountAte == SEM_FAILED)
-	{
-		clearSems(args);
-		return(-1);
-	}
+	clearSems(args);
+	if (initSemaphores(args) == -1)
+		return (-1);
 	return (1);
 }

@@ -2,7 +2,7 @@ FLAG = -Wall -Wextra -Werror
 
 LIB = philo.a
 
-NAME = philo
+NAME = philo_bonus
 
 SRC = 	main.c \
 		atoi.c \
@@ -22,7 +22,7 @@ $(LIB): $(OBJ)
 	@ranlib $(LIB)
 	@echo "$(LIB) indexed"
 
-$(NAME): $(LIB)
+$(NAME): $(LIB) philo.h
 	@gcc $(FLAG) $(LIB) -o $(NAME)
 	@echo "$(NAME) created"
 

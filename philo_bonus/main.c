@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-void clearSems(t_main *args)
+void	clearSems(t_main *args)
 {
 	sem_unlink("forks");
 	sem_unlink("eat");
@@ -28,12 +28,12 @@ void clearSems(t_main *args)
 	sem_close(args->amountAte);
 }
 
-void killProcess(t_main *args)
+void	killProcess(t_main *args)
 {
 	int	i;
 
 	i = -1;
-	while(++i < args->setting.philos)
+	while (++i < args->setting.philos)
 	{
 		kill(args->philo[i].pid, SIGTERM);
 	}
@@ -41,26 +41,26 @@ void killProcess(t_main *args)
 
 int	main(int argc, char **argv)
 {
-	t_main	args;
-	pthread_t thread; 
+	t_main		args;
+	pthread_t	thread;
 
-	if (argc == 5 || argc == 6)
-	{
-		if (checkAndInitSettings(argc, argv, &args) == -1)
-			return (-1);
-	}
-	else
+	if (argc != 5 && argc != 6)
 	{
 		printf("Error. Please write correct!\n");
 		return (-1);
 	}
-	clearSems(&args);
+	if (checkAndInitSettings(argc, argv, &args) == -1)
+		return (-1);
 	if (initPhilosForks(&args) == -1)
 		return (-1);
-	runProcess(&args);
-	if(args.setting.stopTime > 0)
+	if (runProcess(&args) == -1)
+	{
+		sem_post(args.finish);
+		return (-1);
+	}
+	if (args.setting.stopTime > 0)
 		pthread_create(&thread, NULL, ateEnough, &args);
 	pthread_create(&thread, NULL, isFinish, &args);
 	pthread_join(thread, NULL);
-	return(0);
+	return (0);
 }

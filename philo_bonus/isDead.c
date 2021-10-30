@@ -14,16 +14,15 @@
 
 void	*isFinish(void *arg)
 {
-	int i;
-	t_main *args;
+	int		i;
+	t_main	*args;
 
 	args = (t_main *)arg;
 	i = -1;
 	sem_wait(args->finish);
 	killProcess(args);
-	clearSems(args);
 	free(args->philo);
-	return(NULL);
+	return (NULL);
 }
 
 void	*isDead(void *arg)
@@ -32,7 +31,7 @@ void	*isDead(void *arg)
 	t_philo					*philo;
 
 	philo = (t_philo *)arg;
-	while(1)
+	while (1)
 	{
 		sem_wait(philo->args->check);
 		time = getTime();
@@ -41,7 +40,7 @@ void	*isDead(void *arg)
 		{
 			msg(" died\n", philo->id, philo->args, 6);
 			sem_post(philo->args->finish);
-			return(NULL);
+			return (NULL);
 		}
 		sem_post(philo->args->check);
 	}
@@ -49,8 +48,8 @@ void	*isDead(void *arg)
 
 void	*ateEnough(void *arg)
 {
-	int	i;
-	t_main *args;
+	int		i;
+	t_main	*args;
 
 	i = -1;
 	args = (t_main *)arg;
