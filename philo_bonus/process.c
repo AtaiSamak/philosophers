@@ -39,10 +39,10 @@ int	runRoutine(t_philo *philo)
 	pthread_t	thread;
 
 	pthread_create(&thread, NULL, isDead, philo);
+	if (philo->id == 0 || (philo->id + 1) % 2 == 1)
+		ft_usleep(philo->args->setting.eat * 1000);
 	while (1)
 	{
-		if (philo->id == 0 || (philo->id + 1) % 2 == 1)
-			ft_usleep(1000);
 		takeForks(philo->args, philo->id);
 		philo->eats++;
 		msg(" is eating\n", philo->id, philo->args, 11);

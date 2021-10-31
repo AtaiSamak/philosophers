@@ -39,10 +39,10 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
+	if (philo->id == 0 || (philo->id + 1) % 2 == 1)
+		ft_usleep(philo->args->setting.eat * 1000);
 	while (1)
 	{
-		if (philo->id == 0 || (philo->id + 1) % 2 == 1)
-			ft_usleep(1000);
 		isEating(philo->args, philo->fork_two, philo->fork_one);
 		philo->eats++;
 		msg(" is eating\n", philo->id, philo->args, 11);
