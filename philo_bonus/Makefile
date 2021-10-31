@@ -1,6 +1,6 @@
 FLAG = -Wall -Wextra -Werror
 
-LIB = philo.a
+LIB = philo.h
 
 NAME = philo_bonus
 
@@ -14,16 +14,10 @@ SRC = 	main.c \
 
 OBJ = $(SRC:.c=.o)
 
-all: $(LIB) $(NAME)
+all: $(NAME)
 
-$(LIB): $(OBJ)
-	@ar rc $(LIB) $(OBJ)
-	@echo "$(LIB) created"
-	@ranlib $(LIB)
-	@echo "$(LIB) indexed"
-
-$(NAME): $(LIB) philo.h
-	@gcc $(FLAG) $(LIB) -o $(NAME)
+$(NAME): $(OBJ) $(LIB)
+	@gcc $(FLAG) $(OBJ) -o $(NAME)
 	@echo "$(NAME) created"
 
 %.o: %.c
@@ -34,8 +28,6 @@ clean:
 	@echo "OBJ deleted"
 
 fclean: clean
-	@rm -f $(LIB)
-	@echo "$(LIB) deleted"
 	@rm -f $(NAME)
 	@echo "$(NAME) deleted"
 

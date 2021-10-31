@@ -26,7 +26,8 @@ typedef struct s_philo
 	unsigned long long int	lastEat;
 	int						id;
 	int						eats;
-	int						died;
+	int						fork_two;
+	int						fork_one;
 	pthread_t				philo;
 	pthread_mutex_t			fork_lock;
 	struct s_main			*args;

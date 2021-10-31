@@ -70,7 +70,7 @@ int	runProcess(t_main *args)
 		args->philo[i].lastEat = args->time;
 		args->philo[i].pid = fork();
 		if (args->philo[i].pid == 0)
-			runRoutine(&args->philo[i]);
+			return (runRoutine(&args->philo[i]));
 		else if (args->philo[i].pid < 0)
 			return (-1);
 	}

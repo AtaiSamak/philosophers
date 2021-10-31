@@ -37,6 +37,16 @@ int	checkAndInitSettings(int argc, char **argv, t_main *args)
 	return (1);
 }
 
+int	setForkTwo(t_philo *philo)
+{
+	int	fork_two;
+
+	fork_two = philo->id - 1;
+	if (philo->id == 0)
+		fork_two = philo->args->setting.philos - 1;
+	return (fork_two);
+}
+
 int	initPhilosForks(t_main *args)
 {
 	int	i;
@@ -48,10 +58,11 @@ int	initPhilosForks(t_main *args)
 	while (++i < args->setting.philos)
 	{
 		args->philo[i].lastEat = 0;
-		args->philo[i].died = 0;
 		args->philo[i].id = i;
 		args->philo[i].args = args;
 		args->philo[i].eats = 0;
+		args->philo[i].fork_one = i;
+		args->philo[i].fork_two = setForkTwo(&args->philo[i]);
 		pthread_mutex_init(&args->philo[i].fork_lock, NULL);
 	}
 	return (1);

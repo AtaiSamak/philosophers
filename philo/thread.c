@@ -34,46 +34,26 @@ void	isEating(t_main *args, int prev, int next)
 	pthread_mutex_unlock(&args->eat);
 }
 
-int	setPrev(t_philo *philo)
-{
-	int	prev;
-
-	if (philo->id == 0 || (philo->id + 1) % 2 == 1)
-	{
-		prev = philo->id - 1;
-		if (philo->id == 0)
-			prev = philo->args->setting.philos - 1;
-	}
-	else
-	{
-		prev = philo->id + 1;
-		if (philo->id == philo->args->setting.philos - 1)
-			prev = 0;
-	}
-	return (prev);
-}
-
 void	*routine(void *arg)
 {
 	t_philo	*philo;
-	int		prev;
-	int		next;
 
 	philo = (t_philo *)arg;
-	next = philo->id;
-	prev = setPrev(philo);
-	isEating(philo->args, prev, next);
-	philo->eats++;
-	msg(" is eating\n", next, philo->args, 11);
-	ft_usleep(philo->args->setting.eat * 1000);
-	philo->lastEat = getTime();
-	msg(" is sleeping\n", next, philo->args, 13);
-	pthread_mutex_unlock(&philo->args->philo[prev].fork_lock);
-	pthread_mutex_unlock(&philo->args->philo[next].fork_lock);
-	ft_usleep(philo->args->setting.sleep * 1000);
-	msg(" is thinking\n", next, philo->args, 13);
-	if (philo->died == 0)
-		routine(philo);
+	while (1)
+	{
+		if (philo->id == 0 || (philo->id + 1) % 2 == 1)
+			ft_usleep(1000);
+		isEating(philo->args, philo->fork_two, philo->fork_one);
+		philo->eats++;
+		msg(" is eating\n", philo->id, philo->args, 11);
+		ft_usleep(philo->args->setting.eat * 1000);
+		philo->lastEat = getTime();
+		msg(" is sleeping\n", philo->id, philo->args, 13);
+		pthread_mutex_unlock(&philo->args->philo[philo->fork_one].fork_lock);
+		pthread_mutex_unlock(&philo->args->philo[philo->fork_two].fork_lock);
+		ft_usleep(philo->args->setting.sleep * 1000);
+		msg(" is thinking\n", philo->id, philo->args, 13);
+	}
 	return (NULL);
 }
 

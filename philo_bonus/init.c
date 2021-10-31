@@ -67,7 +67,6 @@ int	initPhilosForks(t_main *args)
 	while (++i < args->setting.philos)
 	{
 		args->philo[i].lastEat = 0;
-		args->philo[i].died = 0;
 		args->philo[i].id = i;
 		args->philo[i].args = args;
 		args->philo[i].eats = 0;

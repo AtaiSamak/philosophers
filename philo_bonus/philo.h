@@ -28,7 +28,6 @@ typedef struct s_philo
 	unsigned long long int	lastEat;
 	int						id;
 	int						eats;
-	int						died;
 	pid_t					pid;
 	struct s_main			*args;
 }				t_philo;
